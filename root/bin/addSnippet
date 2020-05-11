@@ -1,0 +1,75 @@
+#!/usr/bin/perl
+#
+use Getopt::Long;
+
+
+#
+# -c : comment syntax (format is start end)
+#
+my $opt_c;
+GetOptions('comment|c=s' => \$opt_c)
+    or die("Error in command line arguments\n");
+
+if ($#ARGV == 0)
+{
+    chop($file = `basename $ARGV[0]`);
+    ($root, $suffix) = split('\.', $file);
+    $ROOT = uc $root;
+    #$Root = ucfirst $root;
+
+    $suffix = $root unless $suffix;
+}
+    
+if ($opt_c)
+{
+    $commentBlock = "**";
+    ($commentStart, $commentEnd) = split(/[ \t]+/,$opt_c);
+}
+else
+{
+    # Try to guess from suffix
+  SUFFIX: {
+      $commentStart = '//', last SUFFIX if $suffix =~ /[CH]$/;
+      $commentStart = '//', last SUFFIX if $suffix =~ /hpp$/;
+      $commentStart = '//', last SUFFIX if $suffix =~ /cpp$/;
+      $commentStart = '#', last SUFFIX if $suffix =~ /py$/;
+      $commentStart = '#', last SUFFIX if $suffix =~ /pl$/;
+      $commentStart = '/*', $commentEnd = '*/', $commentBlock = '**', last SUFFIX if $suffix =~ /[ch]$/;
+      # Default
+      $commentStart = $commentEnd = $commentBlock = "//";
+  }
+}
+
+
+if (! $commentEnd)
+{
+    $commentEnd = $commentBlock = $commentStart;
+}
+
+my $templateDir=$ENV{'HOME'};
+$templateDir= $ENV{'VGCONF'} if exists $ENV{'VGCONF'};
+
+$kind="";
+$line=1;
+while(<>)
+{
+    printf("\n$commentStart-----------------------------------------------------------------------------\n\n") if ($line > 1 );
+    chop;
+    @line =split(/[ \t\.]+/,$_);
+    $root=$line[0];
+    $kind=$line[1];
+
+    $snippetFile = "${templateDir}/.snippet.$kind";
+    #printf("$root $kind $snippetFile|");
+    if (-r $snippetFile)
+    {
+        open(TEMPL, "<$snippetFile") || die "Can't open $snippetFile: $!\n";
+        while ($_ = <TEMPL>)
+        {
+            s/"/\\"/g;
+            print eval qq/"$_"/;
+        }
+        close(TEMPL);
+    }
+    $line++;
+}

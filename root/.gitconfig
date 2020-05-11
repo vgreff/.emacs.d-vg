@@ -1,0 +1,66 @@
+[user]
+	email = vince@greffsite.com
+	name = vincent.greff
+[color]
+	ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+
+[core]
+        whitespace = trailing-space,space-before-tab
+
+[diff]
+        renames = copies
+
+[merge]
+        stat = true
+
+[alias]
+        br = branch
+        ci = commit
+        last = log -1 HEAD
+	st = status
+	co = checkout
+	staged = "diff --cached"
+	unstaged = diff
+	both = "diff HEAD"
+	oneline = "log --pretty=oneline"
+        lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit --date=relative"
+        lg2 = "log --oneline --date-order --graph --all --decorate"
+        lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
+        lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph --stat"
+	F = pull
+	P = push
+        aa = "add -A"
+        ai = add --interactive
+
+        cm = commit -m
+        cma = commit -a -m
+        ca = commit --amend
+        caa = commit -a --amend -C HEAD
+	amend = "commit --ammend"
+	plus = "commit --ammend"
+
+        r = reset
+        r1 = reset HEAD^
+        r2 = reset HEAD^^
+        rh = reset --hard
+        rh1 = reset HEAD^ --hard
+        rh2 = reset HEAD^^ --hard
+	meld = !~/bin/git-meld.pl
+	cat = cat-file
+[giggle]
+	main-window-maximized = false
+	main-window-geometry = 1497x1123+3991+25
+	main-window-view = FileView
+	show-graph = true
+	history-view-vpane-position = 363
+	file-view-vpane-position = 621
+[rerere]
+	enabled = true
+#[pull]
+#	rebase = true
+#[branch "master"]
+#	mergeoptions = --squash

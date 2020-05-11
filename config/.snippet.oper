@@ -1,0 +1,27 @@
+  public:
+    $root(const $root& obj) // = delete default;
+    {
+    
+    }
+    $root& operator=(const $root& rhs) // = delete;
+    {
+    
+    }
+    
+    $root($root&& obj) // = delete;
+    {
+    
+    }
+    $root& operator=($root&& rhs) = delete;
+    {
+    
+    }
+
+    int operator==(const $root& rhs) const
+    {
+    
+    }
+    int operator<(const $root& rhs) const
+    {
+    
+    }

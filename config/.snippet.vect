@@ -1,0 +1,3 @@
+  public:
+    typedef std::shared_ptr<$root> Ptr;
+    typedef std::vector<${root}::Ptr> VectorPtr;

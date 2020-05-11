@@ -1,0 +1,21 @@
+class $root
+{
+  public:
+    $root()
+    {
+    
+    }
+    
+    ~$root()
+    {
+    
+    }
+
+    
+    friend std::ostream& operator<<(std::ostream& out, const $root& obj)
+    {
+      return out;	
+    }
+  private:
+
+};
