@@ -1,0 +1,123 @@
+#######################################################################
+## Copyright (c) by Daniel Davidson                                    
+## All Rights Reserved.                                                
+#######################################################################
+require 'codegen'
+require 'codegen/cpp'
+require 'place'
+i=Codegen.single_indent
+ _buf << %Q`#{Codegen.cpp_copyright(@cls.header_filename, @cls.brief)}
+#ifndef #{@cls.include_guard}
+#define #{@cls.include_guard}
+\n`
+if 0 != @cls.additions_pre_include_header.length
+ _buf << %Q`#{@cls.additions_pre_include_header.join(Codegen::NL)}\n`
+end
+if @cls.header_includes.length
+ _buf << %Q`#{@cls.clean_header_includes}
+\n`
+end
+if @cls.is_api_header and !@cls.library.header_only and !@cls.library.static_only
+ _buf << %Q`#{@cls.windows_api_decl}\n`
+end
+if 0 != @cls.forward_class_decls_parsed.length
+ _buf << %Q`// Forward class declarations
+#{@cls.forward_class_decls_parsed.join(Codegen::NL)}
+\n`
+end
+if !@cls.additions_pre_namespace.empty?
+ _buf << %Q`#{@cls.additions_pre_namespace.join(Codegen::NL)}\n`
+end
+if @cls.global_header_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} global header section")}\n`
+end
+if @cls.describe_api
+import('cpp_library_description_methods.tmpl') if !@cls.library.descr.empty?
+end
+if @cls.is_api_header
+guts = @cls.api_header_namespace_contents
+else
+guts = @cls.class_definition_wrapper
+end
+@cls.additional_classes.each do |ac|
+if @cls.additional_classes_come_first
+guts = "\n#{ac.class_definition_wrapper}\n" + guts
+else
+guts += "\n#{ac.class_definition_wrapper}\n"
+end
+end
+if @cls.header_pre_namespace_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} pre namespace section")}\n`
+end
+@cls.namespace.each do |ns|
+ _buf << %Q`namespace #{ns} {\n`
+end
+if @cls.header_namespace_begin_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} namespace begin section")}\n`
+end
+if 0 != @cls.additions_header_namespace.length
+ _buf << %Q`#{Codegen.align_preprocessor(Codegen.indent_absolute_text(@cls.additions_header_namespace.join(Codegen::NL), 1))}\n`
+end
+if @cls.pre_class_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} pre class section")}\n`
+end
+if @cls.file_level_consts.length > 0
+ _buf << %Q`
+#{i}// Public constants\n`
+@cls.file_level_consts.each do |const|
+ _buf << %Q`#{Codegen.indent_absolute_text(const, 1)};\n`
+end
+end
+if 0 != @cls.namespace_forward_class_decls.length
+ _buf << %Q`
+#{i}// Forward class declarations\n`
+@cls.namespace_forward_class_decls.each do |decl|
+ _buf << %Q`#{i}class #{decl};\n`
+end
+end
+if guts
+ _buf << %Q`
+#{Codegen.align_preprocessor(Codegen.indent_absolute_text(guts, 1))}
+\n`
+end
+@cls.nested_classes.each do |nc|
+if (@cls.streamable_inline or @cls.streamable_inline_custom)
+ _buf << %Q`#{i}// Nested class #{nc.name} streamer
+#{Codegen.indent_absolute_text(nc.streamable_impl().chomp, 1)} \n`
+end   
+end   
+if @cls.header_namespace_end_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} namespace end section")}\n`
+end
+@cls.namespace.reverse.each do |ns|
+ _buf << %Q`} // namespace #{ns}\n`
+end
+if @cls.header_post_namespace_section
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} post namespace section")}\n`
+end
+if @cls.property_tree
+ _buf << %Q`
+namespace etf {
+namespace utils {
+namespace serialize {
+
+#{i}template<>
+#{i}inline 
+#{i}void put_to_property_tree(std::string const& path, boost::property_tree::ptree & tree, 
+#{i}                          #{@cls.fully_qualified_name} const& item_to_put) {
+#{i}#{i}item_to_put.to_property_tree(path, tree);
+#{i}}
+
+#{i}template<>
+#{i}inline 
+#{i}void get_from_property_tree(std::string const& path, boost::property_tree::ptree const& tree, 
+#{i}                            #{@cls.fully_qualified_name} & item_to_get) {
+#{i}#{i}item_to_get.from_property_tree(path, tree);
+#{i}}
+
+}
+}
+}
+\n`
+end
+ _buf << %Q`#endif // #{@cls.include_guard}\n`

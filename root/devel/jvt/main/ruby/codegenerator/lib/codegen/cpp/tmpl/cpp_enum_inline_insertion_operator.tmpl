@@ -1,0 +1,3 @@
+inline #{@me.friend_text}std::ostream& operator<<(std::ostream &out, #{@me.scope_name} e) {
+  return out << to_c_str(e);
+}

@@ -1,0 +1,7 @@
+export DEPLOY=~/DEPLOY/PROD
+
+export JETSTREAMROOT=$DEPLOY
+export JETROOT=$DEPLOY
+export JVTROOT=$DEPLOY
+
+. $JVTROOT/package/envdev.sh

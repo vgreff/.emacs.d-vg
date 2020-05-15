@@ -1,0 +1,19 @@
+<?rb ####################################################################### ?>
+<?rb ## Copyright (c) by Daniel Davidson                                     ?>
+<?rb ## All Rights Reserved.                                                 ?>
+<?rb ####################################################################### ?>
+module FcsCppPlace
+
+  @@etf_libs = {
+<?rb require 'place' ?>
+<?rb @all_libs.each do |lib| ?>
+    '#{lib.name}_cpp'=> '#{lib.cpp_path}',
+    '#{lib.name}_include'=> '#{lib.header_path}',
+<?rb end ?>
+  }
+
+  def etf_libs() 
+    return @@etf_libs
+  end
+
+end

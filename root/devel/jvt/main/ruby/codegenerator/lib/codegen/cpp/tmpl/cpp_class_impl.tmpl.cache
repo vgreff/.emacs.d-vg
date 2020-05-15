@@ -1,0 +1,60 @@
+#######################################################################
+## Copyright (c) by Daniel Davidson                                    
+## All Rights Reserved.                                                
+#######################################################################
+i=Codegen.single_indent()
+if @cls.static_members.length>0
+ _buf << %Q`/// Class static variable definitions\n`
+@cls.static_members.each do |m|
+ _buf << %Q`#{m.cpp_type} #{@cls.name}::#{m.variable_name}(#{m.init});\n`
+end
+ _buf << %Q`\n`
+end
+if @cls.property_tree
+ _buf << %Q`#{@cls.property_tree_impl().chomp} \n`
+end   
+if @cls.streamable
+ _buf << %Q`#{Codegen.indent_absolute_text(@cls.streamable_impl().chomp, 0)}\n`
+end   
+#######################################################################
+## Nested classes streamers
+#######################################################################
+if @cls.nested_classes.length > 0
+ _buf << %Q`\n`
+@cls.nested_classes.each do |nc|
+ _buf << %Q`#{Codegen.indent_absolute_text(nc.streamable_impl().chomp, 0)}\n`
+end
+end
+@cls.forward_enums.each do |enum|
+ _buf << %Q`#{Codegen.indent_text(enum.enum_stream_ipml)} \n`
+end
+if @cls.enums.select { |e| !e.inline }.length > 0
+ _buf << %Q`// Class enumerations\n`
+@cls.enums.each do |enum|
+ _buf << %Q`#{Codegen.indent_text(enum.enum_stream_ipml)} \n`
+end
+end
+ _buf << %Q`\n`
+if @cls.additions_impl.length>0
+ _buf << %Q`#{Codegen.indent_text(@cls.additions_impl, 0)}
+\n`
+end
+if @cls.ctor_member_init_method
+ _buf << %Q`void #{@cls.name}::ctor_member_init() {\n`
+if @cls.time_ctor_init
+ _buf << %Q`#{i}  etf::utils::performance::Block_performance_counter_tracker time_block(&std::cout, "#{@cls.name} init");\n`
+end
+ _buf << %Q`#{Codegen.indent_text(Codegen.protect_block("#{@cls.name}::init"), 1)}
+}\n`
+end
+if @cls.observer_of.length>0
+ _buf << %Q`
+#{i}/////////////////////////////////////////////////////////////////
+#{i}// Observer methods
+#{i}/////////////////////////////////////////////////////////////////\n`
+@cls.observer_of.each do |observer|
+ _buf << %Q`#{i}void #{@cls.name}::observe(#{observer} const& observed) {
+#{Codegen.protect_block("#{@cls.protect_block_tag} #{observer} observe")}
+#{i}}\n`
+end
+end

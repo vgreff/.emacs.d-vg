@@ -1,0 +1,19 @@
+i=Codegen.single_indent()
+if @cls.to_string_list
+start_capture(:guts)
+ _buf << %Q`static inline
+void member_names_list(String_list_t &out) {\n`
+@cls.streamable_members.each do |m|
+ _buf << %Q`#{i}out.push_back("#{m.variable_name}");\n`
+end
+ _buf << %Q`}
+
+inline 
+void to_string_list(String_list_t &out) const {\n`
+@cls.streamable_members.each do |m|
+ _buf << %Q`#{i}out.push_back(boost::lexical_cast< std::string >(#{m.variable_name}));\n`
+end
+ _buf << %Q`}\n`
+stop_capture()
+ _buf << %Q`#{Codegen.indent_absolute_text(@guts, 1)}\n`
+end

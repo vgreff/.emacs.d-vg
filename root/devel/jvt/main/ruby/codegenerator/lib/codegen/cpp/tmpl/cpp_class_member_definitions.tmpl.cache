@@ -1,0 +1,24 @@
+i=Codegen.single_indent()
+#######################################################################
+## Member attributes
+#######################################################################
+[ 
+     [ 'public', @cls.public_members ], 
+     [ 'protected', @cls.protected_members ],  
+     [ 'private', @cls.private_members ] ].each do |access, members|
+next if members.length==0
+ _buf << %Q`#{access}:\n`
+members.each do |m|
+if m.brief
+ _buf << %Q`#{m.ifdef "#{i}//! #{m.brief} <I>#{m.access_text}</I>"}\n`
+end
+if m.descr
+ _buf << %Q`#{i}/** 
+#{i}#{Codegen.indent_text(m.descr)}
+#{i} */\n`
+end
+static = (m.static)? 'static ' : ''
+store_by_ref_type = (m.store_by_ref)? '& ' : (m.store_by_cref)? 'const & ' : ''
+ _buf << %Q`#{m.ifdef "#{i}#{static}#{m.cpp_type} #{store_by_ref_type}#{m.variable_name};"}\n`
+end
+end

@@ -1,0 +1,3 @@
+void #{@me.scope_entry_prefix}#{@me.dump_name}(std::ostream &out, int e) {
+<?rb import('cpp_mask_enum_dump_function_impl.tmpl') ?>
+}

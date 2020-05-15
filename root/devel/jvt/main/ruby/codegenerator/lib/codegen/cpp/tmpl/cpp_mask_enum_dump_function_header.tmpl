@@ -1,0 +1,7 @@
+<?rb if @me.inline ?>
+static inline void #{@me.dump_name}(std::ostream &out, int e) {
+<?rb import('cpp_mask_enum_dump_function_impl.tmpl') ?>
+}
+<?rb else ?>
+#{@me.static_text}#{@me.api_decl_text}void #{@me.dump_name}(std::ostream &out, int e);
+<?rb end ?>

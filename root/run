@@ -1,0 +1,15 @@
+tar cvzf SETUP-VG.tar.gz Emacs bin HISTORY Documents/setupScreens.pl .template.* .z* .emacs .emacs.d .mykshrc* .abbrev_defs .pgpass .sqshrc .ssh/authorized_keys .sqshrc .subversion/config .gitconfig run .netrc devel/jvt/main/package devel/jvt/main/rules
+
+#tar cvzf SETUP-VG.tar.gz Emacs bin HISTORY Documents .template.* .z* .emacs .emacs.d .mykshrc* .abbrev_defs .pgpass .sqshrc .ssh/authorized_keys .sqshrc .subversion/config .gitconfig run .netrc devel
+
+cp SETUP-VG.tar.gz /tmp
+
+for i in `seq 1 9`
+do
+	export rhost=oak-jvtworkl$i
+	echo $rhost
+	scp -q SETUP-VG.tar.gz vgreff@$rhost:/tmp
+	ssh vgreff@$rhost "cd ; rm -rf Emacs  ;mkdir -p ~/devel/jvt/main/cpp/jvt; tar xzf /tmp/SETUP-VG.tar.gz ;chmod g+rx ~/. "
+done
+
+

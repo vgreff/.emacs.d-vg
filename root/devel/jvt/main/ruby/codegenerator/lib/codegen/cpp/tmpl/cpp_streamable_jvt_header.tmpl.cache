@@ -1,0 +1,6 @@
+#######################################################################
+## Copyright (c) by Vincent Greff                                      
+## All Rights Reserved.                                                
+#######################################################################
+ _buf << %Q`#{@cls.friend_template_decl("#{@cls.api_decl_space}friend MemStream& operator<<(MemStream& out, #{@cls.friend_templatized(@cls.name)} const& item);")}
+#{@cls.friend_template_decl("#{@cls.api_decl_space}friend MemStream& operator>>(MemStream& out, #{@cls.friend_templatized(@cls.name)}& item);")}\n`

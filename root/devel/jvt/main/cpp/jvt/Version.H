@@ -1,0 +1,8 @@
+#ifndef JVT_VERSION_H
+#define JVT_VERSION_H
+
+#define JVT_VERSION_MAJOR 1
+#define JVT_VERSION_MINOR 0
+#define JVT_VERSION_PATCH 0
+
+#endif

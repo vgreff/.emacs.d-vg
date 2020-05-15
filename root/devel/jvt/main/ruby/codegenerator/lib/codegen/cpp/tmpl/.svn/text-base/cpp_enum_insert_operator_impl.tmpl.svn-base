@@ -1,0 +1,15 @@
+#{@me.api_decl_text}std::ostream& operator<<(std::ostream &out, #{@me.scope_name} e) {
+  char const* txt = "";
+  switch(e) {
+<?rb i=0 ?>
+<?rb @me.values.each do |v| ?>
+    case #{v}:
+      txt = #{@me.picklist_variable_name}[#{i}];
+      break;
+<?rb i+=1 ?>
+<?rb end ?>
+  }
+  out << txt;
+  return out;
+}
+

@@ -1,0 +1,15 @@
+<?rb if @me.supports_picklist ?>
+#{"inline" if @me.inline}
+void from_c_str(char const* txt, #{@me.api_decl_text}#{@me.name} &value) {
+<?rb @me.values.each do |value| ?>
+  if(0 == std::strcmp("#{value}", txt)) {
+    value = #{value};
+  }
+<?rb end ?>
+  std::string msg("No #{@me.name} value corresponding to: ");
+  msg += txt;
+  throw std::runtime_error(txt);
+}
+<?rb end ?>
+
+<?rb import('cpp_enum_to_c_str_impl.tmpl') ?>

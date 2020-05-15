@@ -1,0 +1,47 @@
+i=Codegen.single_indent()
+if not @cls.readable_members.empty? or not @cls.writable_members.empty?
+ _buf << %Q`#{i}/////////////////////////////////////////////////////////////////
+#{i}// member accessors
+#{i}/////////////////////////////////////////////////////////////////\n`
+end
+@cls.members.each do |m|
+    if @cls.readable_members.include? m
+        static = (m.static)? 'static ' : ''
+        konst = (m.static)? '' : ' const'
+            if m.brief and @cls.accessor_docs
+ _buf << %Q`#{i}//! reader for #{m.name} <B>#{m.brief}</B>\n`
+            end
+        if m.accessor_type
+ _buf << %Q`#{m.ifdef "#{i}#{static}#{m.accessor_type} #{m.name}()#{konst} {
+#{i}#{i}return #{m.accessor_type}(#{m.variable_name});
+#{i}}"}\n`
+        else
+ _buf << %Q`#{m.ifdef "#{i}#{static}#{m.pass_type_const} #{m.name}()#{konst} {
+#{i}#{i}return #{m.variable_name};
+#{i}}"}\n`
+        end
+ _buf << %Q`\n`
+    end
+    if @cls.writable_members.include? m
+            if m.brief and @cls.accessor_docs
+ _buf << %Q`#{i}//! writer for #{m.name} <B>#{m.brief}</B>\n`
+            end
+        if m.accessor_type
+ _buf << %Q`#{i}#{static}void #{m.name}(#{m.accessor_type} val) {\n`
+        else
+ _buf << %Q`#{i}#{static}void #{m.name}(#{m.pass_type_const} val) {\n`
+        end
+ _buf << %Q`#{i}#{i}#{m.variable_name} = val;
+#{i}}\n`
+        if m.pass_by_ref
+ _buf << %Q`\n`
+            if m.brief and @cls.accessor_docs
+ _buf << %Q`#{i}//! non-const reader for #{m.name} <B>#{m.brief}</B>\n`
+            end
+ _buf << %Q`#{m.ifdef "#{i}#{static}#{m.pass_type_non_const} #{m.name}() {
+#{i}#{i}return #{m.variable_name};
+#{i}}"}\n`
+        end
+ _buf << %Q`\n`
+    end
+end

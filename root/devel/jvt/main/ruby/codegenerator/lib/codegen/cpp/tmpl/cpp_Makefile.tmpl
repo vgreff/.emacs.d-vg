@@ -1,0 +1,47 @@
+<?rb ####################################################################### ?>
+<?rb ## Copyright (c) by Vincent Greff                                       ?>
+<?rb ## All Rights Reserved.                                                 ?>
+<?rb ####################################################################### ?>
+
+<?rb require 'codegen' ?>
+<?rb require 'codegen/cpp' ?>
+
+MODULES = \
+<?rb @lib.impl_classes.each do |c| ?>
+     #{c.name}.C \
+<?rb end ?>
+<?rb @lib.hand_coded_impls.each do |hc| ?>
+     #{hc} \
+<?rb end ?>
+
+#{Codegen.protect_block("#{@lib.name} extra source", Codegen::BUILD_PROTECT_BLOCK_DELIMITERS)}
+
+TEMPLATES = \
+
+
+SRC = \
+	$(MODULES)
+
+
+HEADERS = \
+	$(MODULES:.C=.H) \
+	$(TEMPLATES)
+
+
+#  #{Place.place['CPP']} 
+
+BUILD_DIRS = 
+INSTALL_DIRS = $(BUILD_DIRS)
+
+LIBINCLNSPATH = #{@lib.namespacePath}
+LIBTGT = #{@lib.nameBase}
+SCRIPTSTGT =
+
+#USE_JET=1
+#USE_JETSTREAM=1
+#USE_LLM=1
+
+JVTLIBS = 
+SYSLIBS = 
+
+include $(JVTROOT)/rules/mkrules.mk

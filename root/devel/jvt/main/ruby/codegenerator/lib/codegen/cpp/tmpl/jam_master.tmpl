@@ -1,0 +1,318 @@
+<?rb ####################################################################### ?>
+<?rb ## Copyright (c) by Daniel Davidson                                     ?>
+<?rb ## All Rights Reserved.                                                 ?>
+<?rb ####################################################################### ?>
+<?rb require 'place' ?>
+<?rb Place.place.each do |k,v| ?>
+(defun vis-place-#{k}() 
+"Visit on #{k}"
+(interactive) 
+  (find-file "#{v}"))
+(defun shell-place-#{k}()
+  (interactive)
+  (save-excursion
+  (cd "#{v}")
+    (shell-in-dir "#{v}")))
+<?rb end ?>
+<?rb Place.cpp_packages.each do |k| ?>
+(defun xgrep-sys-#{k.name}-include(strarg) 
+"Does a grep on #{k.include_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{k.include_path} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on #{k.include_path} *" strarg) t)))
+
+(defun ixgrep-sys-#{k.name}-include(strarg) 
+"Does a grep on #{k.include_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{k.include_path} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on #{k.include_path} *" strarg) t)))
+
+(defun vis-sys-#{k.name}-include() 
+"Visit on #{k.include_path}"
+(interactive) 
+  (find-file "#{k.include_path}"))
+<?rb end ?>
+(setq jam-parallel 4)
+(setq jam-options "")
+(setq jam-toolset "--toolset=gcc")
+(defun jam-use-gcc() (interactive) (setq jam-toolset "--toolset=gcc"))
+(defun jam-use-intel() (interactive) (setq jam-toolset "--toolset=intel"))
+(defun jam-options-show-commands() (interactive) (setq jam-options "-d +2"))
+(defun jam-options-clear() (interactive) (setq jam-options ""))
+
+(defun xgrep-boost-build(strarg) 
+"Does a grep on all build files in boost build install - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place['boost-build_install']} -tbuild -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) build on #{Place['boost-build_install']} *" strarg) t)))
+
+(defun xgrep-top-build(strarg) 
+"Does a grep on all build files from the top - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place[Place.top]} -tbuild -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) top build files *" strarg) t)))
+
+(defun xgrep-top-cpp(strarg) 
+"Does a grep on all cpp files from the top - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place[Place.top]} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) top cpp files *" strarg) t)))
+
+
+(defun ixgrep-boost-build(strarg) 
+"Does a grep on all build files in boost build install - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place['boost-build_install']} -tbuild -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) cpp on #{Place['boost-build_install']} *" strarg) t)))
+
+(defun ixgrep-top-build(strarg) 
+"Does a grep on all build files from the top - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place[Place.top]} -tbuild -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) top build files *" strarg) t)))
+
+(defun ixgrep-top-cpp(strarg) 
+"Does a grep on all cpp files from the top - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{Place[Place.top]} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) top cpp files *" strarg) t)))
+
+<?rb @all_apps.each do |app| ?>
+(defun shell-app-#{app.name}()
+  (interactive)
+  (save-excursion
+  (cd "#{app.app_path}")
+    (shell-in-dir "#{app.app_path}")))
+
+<?rb end ?>
+<?rb [ 
+      ['-a', '-a'],
+      ['-n', '-n'],
+      ['-an', '-an'],
+      ['-c', 'clean'],
+      ['', '']
+     ].each do | command_tag, command | ?>
+(defun jam-top-install-debug#{command_tag}()
+  (interactive)
+  (compile (format "cd #{Place['cpp']}; time bjam #{Place.top}_install_debug #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(top-install-debug#{command_tag}) *" t)))
+(defun jam-top-install-release#{command_tag}()
+  (interactive)
+  (compile (format "cd #{Place['cpp']}; time bjam #{Place.top}_install_release #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(top-install-apps#{command_tag}) *" t)))
+(defun jam-top-unit-tests-debug#{command_tag}()
+  (interactive)
+  (compile (format "cd #{Place['cpp']}; time bjam #{Place.top}_unit_tests debug #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(top-unit-tests-debug#{command_tag}) *" t)))
+(defun jam-top-unit-tests-release#{command_tag}()
+  (interactive)
+  (compile (format "cd #{Place['cpp']}; time bjam #{Place.top}_unit_tests release #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(top-unit-tests-release#{command_tag}) *" t)))
+<?rb end ?>
+<?rb [ 
+      ['-d', 'debug'],
+      ['-r', 'release'],
+      ['-p', 'profile']
+     ].each do | tag, config | ?>
+<?rb [ 
+      ['-a', '-a'],
+      ['-n', '-n'],
+      ['-an', '-an'],
+      ['-c', 'clean'],
+      ['', '']
+     ].each do | command_tag, command | ?>
+(defun jam-cwd#{tag}#{command_tag}()
+  (interactive)
+  (compile (format "time bjam #{config} #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer (format "* jam:(%s %s-#{tag}#{command_tag}) *" (pwd) jam-parallel) t)))
+(defun jam-top#{tag}#{command_tag}()
+  (interactive)
+  (compile (format "cd #{Place['cpp']}; time bjam #{config} #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(top#{tag}#{command_tag}) *" t)))
+<?rb @all_apps.each do |app| ?>
+
+(defun xgrep-app-#{app.name}(strarg) 
+"Does a grep on all files in cpp #{app.app_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{app.app_path} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on #{app.name} *" strarg) t)))
+
+(defun ixgrep-app-#{app.name}(strarg) 
+"Does a grep on all files in cpp #{app.app_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{app.app_path} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) cpp on #{app.name} *" strarg) t)))
+
+(defun gvim-app-#{app.name}() 
+"Brings up vim on all files"
+(interactive) 
+  (shell-command (format "vim -g %s &" (shell-command-to-string "xgrep -p#{app.app_path} -tcpp -s"))))
+
+(defun vis-app-#{app.name}() 
+"Brings up dired on path"
+(interactive) 
+  (find-file "#{app.app_path}"))
+
+(defun jam-app-#{app.name}#{tag}#{command_tag}()
+  (interactive)
+  (compile (format "cd #{app.app_path}; time bjam #{config} #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(app-#{app.name}#{tag}#{command_tag}) *" t)))
+<?rb end ?>
+<?rb @all_libs.each do |lib| ?>
+<?rb if not lib.header_only ?>
+
+(defun xgrep-lib-build-#{lib.name}(strarg) 
+"Does a grep on all files in build #{lib.build_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.build_path} -tbuild -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) build on #{lib.name} *" strarg) t)))
+
+(defun ixgrep-lib-build-#{lib.name}(strarg) 
+"Does a grep on all files in cpp #{lib.build_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.build_path} -tbuild -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) build on #{lib.name} *" strarg) t)))
+
+(defun xgrep-lib-src-#{lib.name}(strarg) 
+"Does a grep on all files in cpp #{lib.cpp_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.cpp_path} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on #{lib.name} *" strarg) t)))
+
+(defun ixgrep-lib-src-#{lib.name}(strarg) 
+"Does a grep on all files in cpp #{lib.cpp_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.cpp_path} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) cpp on #{lib.name} *" strarg) t)))
+
+(defun gvim-lib-src-#{lib.name}() 
+"Brings up vim on all files"
+(interactive) 
+  (shell-command (format "vim -g %s &" (shell-command-to-string "xgrep -p#{lib.cpp_path} -tcpp -s"))))
+
+(defun vis-lib-build-#{lib.name}() 
+"Brings up dired on path"
+(interactive) 
+  (find-file "#{lib.build_path}"))
+
+(defun vis-lib-src-#{lib.name}() 
+"Brings up dired on src path"
+(interactive) 
+  (find-file "#{lib.cpp_path}"))
+
+<?rb end ?>
+
+(defun xgrep-lib-header-#{lib.name}(strarg) 
+"Does a grep on all files in cpp #{lib.header_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.header_path} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on header of #{lib.name} *" strarg) t)))
+
+(defun ixgrep-lib-header-#{lib.name}(strarg) 
+"Does a grep on all files in cpp #{lib.header_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.header_path} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) cpp on header of #{lib.name} *" strarg) t)))
+
+(defun gvim-lib-header-#{lib.name}() 
+"Brings up vim on all files"
+(interactive) 
+  (shell-command (format "vim -g %s &" (shell-command-to-string "xgrep -p#{lib.header_path} -tcpp -s"))))
+
+(defun vis-lib-header-#{lib.name}() 
+"Brings up dired on header_path for lib #{lib.name}"
+(interactive) 
+  (find-file "#{lib.header_path}"))
+
+
+(defun jam-lib-#{lib.name}#{tag}#{command_tag}()
+  (interactive)
+  (compile (format "cd #{lib.build_path}; time bjam #{config} #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(lib-#{lib.name}#{tag}#{command_tag}) *" t)))
+
+<?rb lib.classes_with_unit_tests.each do |unit_test| ?>
+
+(defun xgrep-ut-#{lib.name}@#{unit_test.name}(strarg) 
+"Does a grep on all files in cpp #{lib.test_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.test_path} -tcpp -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* grep:(%s) cpp on #{lib.name}@#{unit_test.name} *" strarg) t)))
+
+(defun ixgrep-ut-#{lib.name}@#{unit_test.name}(strarg) 
+"Does a grep on all files in cpp #{lib.test_path} - \nputting results in grep-mode buffer"
+(interactive "sEnter txt:") 
+  (grep (format "xgrep -p#{lib.test_path} -tcpp -i -m%s" strarg))
+  (save-excursion
+    (set-buffer "*grep*")
+    (rename-buffer (format "* igrep:(%s) cpp on #{lib.name}@#{unit_test.name} *" strarg) t)))
+
+(defun gvim-ut-#{lib.name}@#{unit_test.name}() 
+"Brings up vim on all files"
+(interactive) 
+  (shell-command (format "vim -g %s &" (shell-command-to-string "xgrep -p#{lib.test_path} -tcpp -s"))))
+
+(defun vis-ut-#{lib.name}@#{unit_test.name}() 
+"Brings up dired on path"
+(interactive) 
+  (find-file "#{lib.test_path}"))
+
+(defun jam-ut-#{lib.name}@#{unit_test.name}#{tag}#{command_tag}()
+  (interactive)
+  (compile (format "cd #{lib.test_path}; time bjam #{config} #{command} -j%s %s %s" jam-parallel jam-toolset jam-options))
+  (save-excursion
+    (set-buffer "*compilation*")
+    (rename-buffer "* jam:(ut-#{lib.name}@#{unit_test.name}#{tag}#{command_tag}) *" t)))
+<?rb end ?>
+<?rb end ?>
+<?rb end ?>
+<?rb end ?>

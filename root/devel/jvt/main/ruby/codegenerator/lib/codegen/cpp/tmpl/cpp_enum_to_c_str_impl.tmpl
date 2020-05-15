@@ -1,0 +1,9 @@
+#{"static " if @me.scope_class and @me.inline}#{"inline" if @me.inline} 
+#{@me.api_decl_text}char const* to_c_str(#{@me.scope_name} e) {
+  char const* values[] = {
+    "#{@me.values.join(%Q/",#{Codegen::NL}    "/)}"
+  };
+  size_t index(e);
+  return ((index < #{@me.scope_to_class @me.size_enum_name})? values[index] : "INVALID_#{@me.name.upcase}");
+}
+

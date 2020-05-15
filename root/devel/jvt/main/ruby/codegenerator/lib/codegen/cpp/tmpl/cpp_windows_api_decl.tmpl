@@ -1,0 +1,16 @@
+<?rb ####################################################################### ?>
+<?rb ## Copyright (c) by Daniel Davidson                                     ?>
+<?rb ## All Rights Reserved.                                                 ?>
+<?rb ####################################################################### ?>
+<?rb if @cls.is_api_header and not @cls.header_only ?>
+/////// Standard windows approach for exposing symbols in a dll
+#if defined(#{@cls.api_decl}_STATIC_LIB) || defined(GLOBAL_STATIC_LINKAGE) || !defined(_MSC_VER_)
+#define #{@cls.api_decl}
+#else
+#ifdef #{@cls.api_decl}_EXPORTS
+#define #{@cls.api_decl} __declspec(dllexport)
+#else
+#define #{@cls.api_decl} __declspec(dllimport)
+#endif
+#endif
+<?rb end ?>

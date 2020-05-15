@@ -1,0 +1,9 @@
+  out << '(';
+    <?rb i=0 ?>
+    <?rb @me.values.each do |v| ?>
+  if(test_#{@me.name.downcase}(e, #{v})) {
+    out << "#{v},";
+  }
+        <?rb i+=1 ?>
+    <?rb end ?>
+  out << ')';

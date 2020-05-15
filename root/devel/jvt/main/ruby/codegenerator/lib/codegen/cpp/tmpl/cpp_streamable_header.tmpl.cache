@@ -1,0 +1,1 @@
+ _buf << %Q`#{@cls.friend_template_decl("#{@cls.api_decl_space}friend std::ostream& operator<<(std::ostream& out, #{@cls.friend_templatized(@cls.name)} const& item);")}\n`

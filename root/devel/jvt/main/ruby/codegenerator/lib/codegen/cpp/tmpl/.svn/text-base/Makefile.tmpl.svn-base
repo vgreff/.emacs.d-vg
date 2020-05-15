@@ -1,0 +1,14 @@
+<?rb ####################################################################### ?>
+<?rb ## Copyright (c) by Vincent Greff                                       ?>
+<?rb ## All Rights Reserved.                                                 ?>
+<?rb ####################################################################### ?>
+<?rb require 'place' ?>
+
+SUBDIRS = \
+<?rb @all_libs.each do |lib| ?>
+	#{lib.cpp_path.relative_path_from(Place.place['GEN'])} \
+<?rb end ?>
+
+
+
+include $(JVTROOT)/rules/mkrulestop.mk

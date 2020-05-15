@@ -1,0 +1,44 @@
+#######################################################################
+## Copyright (c) by Daniel Davidson                                    
+## All Rights Reserved.                                                
+#######################################################################
+i=Codegen.single_indent()
+if @cls.streamable_friend_decl_required
+ _buf << %Q`// Support for streaming non-static streamable members of #{@cls.name}\n`
+if @cls.streamable_inline or @cls.streamable_inline_custom
+ _buf << %Q`#{@cls.template_decl('inline')}\n`
+end
+ _buf << %Q`#{@cls.api_decl_space}std::ostream& operator<<(std::ostream& out, #{@cls.scoped(@cls.templatized(@cls.name))} const& item)
+{\n`
+if @cls.streamers_included
+ _buf << %Q`#{i}using etf::utils::streamers::operator<<;\n`
+end
+if @cls.streamable_custom or @cls.streamable_inline_custom
+ _buf << %Q`#{Codegen.protect_block("#{@cls.protect_block_tag} custom streamer")}\n`
+else
+if not @cls.no_block_indenter
+ _buf << %Q`#{i}etf::utils::Block_indenter indenter;
+#{i}char const* indent(indenter.current_indentation_text());\n`
+else
+ _buf << %Q`#{i}char const* indent("  ");\n`
+end
+ _buf << %Q`#{i}out << '\\n' << indent << "#{@cls.name}:(" << &item << "):{";\n`
+@cls.streamed_bases.each do |sb|
+ _buf << %Q`#{i}out << '\\n' << indent << "  base:" << static_cast<#{sb} const&>(item);\n`
+end
+@cls.streamable_members.each do |m|
+if m.streamable_custom
+ _buf << %Q`#{Codegen.protect_block("#{m.name} custom streamer")}\n`
+else
+if m.stream_insert_override
+ _buf << %Q`#{i}out << '\\n' << indent << "  #{m.name}:" << #{m.stream_insert_override};\n`
+else
+ _buf << %Q`#{i}out << '\\n' << indent << "  #{m.name}:" << item.#{m.variable_name};\n`
+end
+end
+end
+ _buf << %Q`#{i}out << indent << "}\\n";\n`
+end
+ _buf << %Q`#{i}return out;
+}\n`
+end

@@ -1,0 +1,1 @@
+rdoc -a -N -d ~/etf/ruby/lib -o ~/tmp/etf_ruby_docs
