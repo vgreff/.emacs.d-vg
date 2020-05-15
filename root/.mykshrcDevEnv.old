@@ -1,0 +1,22 @@
+
+export JSROOT=$JUMPROOT
+
+export ROOT=$JETBRC
+export JETROOT=$ROOT
+
+export JVTROOT=$JVTBRC
+
+export JVT_SC_PORT=20011
+
+alias cj='cd $JETBRC/jet'
+alias cjf='cd $JETBRC/jet/jetfuel'
+alias cjs='cd $JETSTREAMBRC/jetstream'
+alias cjv='cd $JVTBRC'
+alias cjvs='cd $JVTBRC/cpp/jvt'
+
+#*********** PATHs stuff ***************************************************
+PATH=.:~/bin:$JVTBRC/BUILD/bin:$JVTBRC/scripts:$MERCURYBRC/bin:$LLM_INSTALL_HOME/perfsamples/ReleaseLatency:/opt/jump/x86_64/doxygen-1.7.1-JUMP1.00/bin:$VALGRINDROOT/bin:$KCACHEGRINDROOT/bin:$JUMPROOT/jet/bin:$PATHORG
+
+export LD_LIBRARY_PATH=$VALGRINDROOT/lib/valgrind:$JVTBRC/BUILD/lib:$JETBRC/jet:$EXSTREAMSPEED/lib:$LLM_INSTALL_HOME/lib64:$GSLROOT/lib:$LD_LIBRARY_PATHORG
+
+export RUBYLIB=$JVTBRC/ruby/codegenerator/lib 

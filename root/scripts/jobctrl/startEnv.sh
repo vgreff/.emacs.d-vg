@@ -1,0 +1,14 @@
+#!/bin/bash
+
+BASEDIR=$1
+
+set +a
+
+REPLAYDATE=2011-08-10
+
+JETSTREAMROOT=$BASEDIR
+JETROOT=$BASEDIR
+JVTROOT=$BASEDIR
+
+. $BASEDIR/rules/thirdparty.txt
+. $BASEDIR/package/envdev.sh

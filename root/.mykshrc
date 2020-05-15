@@ -1,0 +1,234 @@
+history_control=ignoredups
+
+umask 002
+
+limit coredumpsize unlimited
+
+function setenv
+{
+    eval "$1='$2' export $1"
+}
+export LC_ALL=C
+#PAGER=/usr/bin/less
+
+setenv NAME "Vincent B. Greff"
+setenv EDITOR emacs
+
+#export ORBgiopMaxMsgSize=8000000
+
+
+#*********** global aliases  *****************************************************
+
+alias bl="/bin/ls"
+alias l="ls -o"
+alias lg="ls -l"
+ch='*.{h,H,C,cc,cpp,c} Makefile'
+alias lc="setopt NULL_GLOB ; ls -o *.{cc,C,c,cpp} ; unsetopt NULL_GLOB"
+alias lh="setopt NULL_GLOB ; ls -o *.{h,H} ; unsetopt NULL_GLOB"
+alias lch="setopt NULL_GLOB ; ls -o $ch ; unsetopt NULL_GLOB"
+alias la="ls -la"
+alias ll="ls -Lo"
+alias lr="ls -og"
+alias ls="ls -F"
+alias bc="bc -l"
+alias u="cd .."
+alias psc='ps auwx|egrep -v "emacs|xterm|zsh|root"'
+alias pscm='ps auwx|egrep -v "emacs|xterm|zsh|root|gnome|libexec|applet|postgres|-session"'
+alias pe='env|sort'
+alias pej='env|sort| egrep "^J|^PATH|^LD_"'
+alias pep='env|sort| egrep "^PATH|^LD_"'
+
+alias ssh='ssh -X '
+alias svh="history -10000 >~/HISTORY/hist_`date +%Y%m%d-%H%M%S`_$$"
+
+#unalias "rm"
+
+alias md="mkdir -p "
+alias rd="rm -rf "
+alias h="history -10000"
+
+alias del="setopt NULL_GLOB ; /bin/rm -f  *~  .*~ *.bak .*.bak *.BAK ;find -L . -name \"*~\" -delete ;find -L . -name \"core.*\" -delete ; ;find -L . -name \".#*\" -delete ; unsetopt NULL_GLOB"
+
+#alias xl="xlock +nolock -mode random"
+#alias se="stty erase "
+#alias vt100="setenv TERM vt100"
+#alias rs='eval `resize`'
+
+function sm
+{
+	VGPWD=$PWD
+	source ~/.mykshrc
+	cd $VGPWD
+}
+
+#*********** emacs  *****************************************************
+
+function e
+{
+	emacs $* &
+}
+
+function et
+{
+	emacs $1 -T $1 &
+}
+
+#*********** printer  *****************************************************
+
+alias p1="a2ps --columns=1 --lines-per-page=110 --pretty-print --portrait "
+alias p1C="a2ps --columns=1 --lines-per-page=110 --pretty-print --portrait --line-numbers=1 --pretty-print=cxx "
+
+alias p1d="a2ps --columns=1 --lines-per-page=110 --pretty-print --portrait --sides=duplex"
+alias p1c="a2ps --columns=1 --lines-per-page=110 --pretty-print --portrait --pro=color "
+alias p1cd="a2ps --columns=1 --lines-per-page=110 --pretty-print --portrait --pro=color --sides=duplex"
+
+
+#*********** date  *****************************************************
+
+function da
+{
+	date; $* ; date
+}
+
+function ldt
+{
+	LASTDATE=`date +%Y%m%d --date="yesterday"`
+	dow=`date +%w`
+	if [[ "$dow" == "0" ]];	then  LASTDATE=`date +%Y%m%d --date="2 days ago"` ; fi
+	if [[ "$dow" == "1" ]] ; then LASTDATE=`date +%Y%m%d --date="3 days ago"` ; fi
+	export LASTDATE
+	#echo LASTDATE=$LASTDATE
+}
+ldt
+alias ldtp='echo LASTDATE=$LASTDATE'
+alias now="date +%Y%m%d-%H%M%S"
+
+#*********** title  ********************************************************
+
+setWindowTitle()
+{
+        echo -ne "\e]2;$*@${HOST}\a"
+}
+
+alias st=setWindowTitle
+
+alias svw='wmctrl -l -x -G > ~/Documents/HIST/win_`now`.txt ; l ~/Documents/HIST/ | tail'
+#*********** display  *****************************************************
+
+function d
+{
+    echo $1
+    setenv DISPLAY $1':0.0'
+}
+
+alias DD="unset DISPLAY"
+alias dp='echo $DISPLAY'
+
+setenv VGHOST chit-vgl944
+#setenv DISPLAY $VGHOST:0.0
+
+#*********** printers *****************************************************
+
+alias p='echo $PRINTER'
+
+#alias pq=lpq
+#alias pd=lprm
+alias pq='lpstat -R '
+
+alias psqlp="psql -U jvt -d jvtdb -h oak-jvtworkl1"
+alias psqld="psql -U jvt -d jvtdb -h oak-jvtworkl1"
+
+#VGPRINTER=hp2840
+#LPDEST=$VGPRINTER
+#setenv PRINTER $VGPRINTER
+
+#*********** HOSTS *****************************************************
+
+for i in `seq 1 1`
+do
+  alias sc$i="ssh oak-devworkl$i"
+done
+
+for i in `seq 1 10`
+do
+  alias sw$i="ssh oak-jvtworkl$i"
+  alias sj$i="ssh jvtapp@oak-jvtworkl$i"
+done
+alias sw=sw2
+
+alias sb1='ssh jvtbld@oak-jvtworkl1'
+alias sb=sb1
+
+alias ssyb='. /opt/jump/x86_64/sybase-15.0-JUMP1.00/SYBASE.sh'
+
+#*********** SRC CODE repos *****************************************************
+
+
+unset JET
+unset JETSTREAM
+unset JVT
+
+export MERCURYSVN='http://jumpsvn/svn/jump/mercury'
+
+#repos
+export JETSVN='http://jumpsvn2/svn-jet/jet'
+export JETGIT='https://jumpgit/jet/jet.git'
+export JETVC=$JETGIT
+
+export JETSTREAMSVN='http://jumpsvn2/svn-jetstream/jetstream'
+export JETSTREAMGIT='https://jumpgit/jetstream/jetstream.git'
+export JETSTREAMVC=$JETSTREAMGIT
+
+#export JVT='https://vgreff@jvtgit.w2k.jumptrading.com/JVT/jvt.git'
+#if use .netrc
+export JVTGIT='https://jvtgit.w2k.jumptrading.com/JVT/jvt.git'
+export JVTVC=$JVTGIT
+
+#*********** DB servers *****************************************************
+
+# export JVT_DB='dbname=jvtdb host=oak-jvtworkl1 user=jvt password=jvt123'
+
+#*********** GIT stuff *************************************************************
+
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+function gd2 { 
+ echo branch \($1\) has these commits and \($2\) does not 
+ git log $2..$1 --no-merges --format='%h | Author:%an | Date:%ad | %s' --date=local
+}
+function grin {
+git fetch origin master
+gd2 FETCH_HEAD $(parse_git_branch)
+}
+function grout {
+git fetch origin master
+gd2 $(parse_git_branch) FETCH_HEAD
+}
+#*********** SRC CODE branches *****************************************************
+
+# export MERCURYBRC=~/src/mercury/rel/latest
+
+setenv SRCVG /home/vgreff/devel
+alias gitc='git clone '
+
+# export JETSTREAMBRC=~/src/jetstream
+# export JETBRC=~/src/jet/dev/jet_jvt_20110518_151
+# export JVTBRC=~/src/jvt/main
+
+export JETSTREAMBRC=~/devel/jetstream/jetstream-0.1.0-RC6
+export JETBRC=~/devel/jet/jvt_jet_1.10.0.0_wmod
+export JVTBRC=~/devel/jvt/main
+
+source ~/.mykshrcDevEnv
+
+#----------- .start file for cmds below-------------
+
+# nohup /usr/bin/synergys -f --config .quicksynergy/synergy.conf > /tmp/synergy.out &
+
+# nohup runX11VNC.sh > /tmp/runX11vnc &
+# xrdb -merge .Xdefaults
+# nohup runSaveWindows.sh > /tmp/savW &
+#
+
+# cjvs

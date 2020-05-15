@@ -1,0 +1,4 @@
+VGFILE=~/Documents/HIST/win_`now`.txt
+wmctrl -l -x -G |fgrep Emacs > $VGFILE
+./setupScreens.pl $VGFILE
+cat ubuntu1010desktop

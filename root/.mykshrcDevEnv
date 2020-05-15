@@ -1,0 +1,12 @@
+
+export JETSTREAMROOT=$JETSTREAMBRC
+export JETROOT=$JETBRC
+export JVTROOT=$JVTBRC
+
+. $JVTROOT/package/envdev.sh
+
+alias cj='cd $JETBRC/jet'
+alias cjf='cd $JETBRC/jet/jetfuel'
+alias cjs='cd $JETSTREAMBRC/jetstream'
+alias cjv='cd $JVTBRC'
+alias cjvs='cd $JVTBRC/cpp/jvt'

@@ -1,0 +1,1 @@
+0x044000a0  0 2    82   1596 1075 emacs.Emacs           ubuntu1010desktop jvt/SampleLib

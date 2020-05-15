@@ -1,0 +1,1 @@
+cd ; cjv ; cd `find cpp  -type d -name "*SampleLib"`; e -T jvt/SampleLib -f load-marker-list
