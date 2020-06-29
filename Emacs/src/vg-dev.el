@@ -9,6 +9,8 @@
 ;;     (global-set-key (kbd "M-RET d") 'srefactor-lisp-format-defun)
 ;;     (global-set-key (kbd "M-RET b") 'srefactor-lisp-format-buffer)
 
+;(flycheck-mode nil)
+(flymake-mode -1)
 
 (use-package which-key :ensure t :pin melpa
   :config

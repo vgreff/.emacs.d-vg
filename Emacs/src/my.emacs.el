@@ -598,7 +598,7 @@
 ;;(global-set-key [S-down-mouse-3]	'facemenu-menu)
 
 
-;;(global-set-key [C-down-mouse-1]	'mouse-buffer-menu)
+(global-set-key [C-s-mouse-1]	'mouse-buffer-menu)
 ;;(global-set-key [C-down-mouse-2]	'mouse-set-font)
 
 ;;**************************************************************************
@@ -1033,6 +1033,4 @@ and selects that window."
 
 ;;**************************************************************************
 
-(require 'vg-dev)
-
-
+;(require 'vg-dev)
