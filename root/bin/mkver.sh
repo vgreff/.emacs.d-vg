@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 MV="mv -f"
 
