@@ -1,7 +1,8 @@
 # .emacs.d-vg
 
-to install
+# to install
 
+cd ..
 ln -s .emacs.d-vg .emacs.d
 
 for i in ~/.emacs.d/root/.*
