@@ -60,7 +60,7 @@
 	file-view-vpane-position = 621
 [rerere]
 	enabled = true
-#[pull]
-#	rebase = true
-#[branch "master"]
-#	mergeoptions = --squash
+[pull]
+	rebase = true
+[branch "master"]
+	mergeoptions = --squash
