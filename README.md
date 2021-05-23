@@ -2,6 +2,8 @@
 
 # to install
 
+git submodule update --init --recursive
+
 cd ..
 ln -s .emacs.d-vg .emacs.d
 
