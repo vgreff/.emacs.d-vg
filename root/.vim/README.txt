@@ -1,6 +1,10 @@
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
-git clone https://github.com/jreybert/vimagit ~/.vim/bundle/vimagit
-git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
-git clone https://github.com/ctrlpvim/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
+
+cd .vim/bundle
+git submodule init
+git submodule add  https://github.com/vim-airline/vim-airline
+git submodule add  https://github.com/jreybert/vimagit
+git submodule add  https://github.com/ctrlpvim/ctrlp.vim.git
+
