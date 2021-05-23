@@ -1,0 +1,9 @@
+[submodule "root/.vim/bundle/vimagit"]
+	path = root/.vim/bundle/vimagit
+	url = https://github.com/jreybert/vimagit
+[submodule "root/.vim/bundle/vim-airline"]
+	path = root/.vim/bundle/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule "root/.vim/bundle/ctrlp.vim"]
+	path = root/.vim/bundle/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
