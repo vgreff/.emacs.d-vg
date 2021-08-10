@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/usr/bin/bash
 
 MV="mv -f"
 
