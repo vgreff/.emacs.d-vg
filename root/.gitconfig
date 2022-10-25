@@ -10,6 +10,7 @@
 
 [core]
         whitespace = trailing-space,space-before-tab
+	editor = code --wait
 
 [diff]
         renames = copies

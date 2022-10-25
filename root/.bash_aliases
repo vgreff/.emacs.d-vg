@@ -90,7 +90,7 @@ export VGROOT=$VGHOME/root
 export VGCONF=$VGHOME/config
 
 
-export PATH=.:$PATH:$VGROOT/bin/:~/bin/:
+export PATH=.:$PATH:$VGROOT/bin/:~/bin/:/home/vgreff/.local/bin:
 
 
 #unset MANPATH
