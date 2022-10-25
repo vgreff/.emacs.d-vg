@@ -5,11 +5,16 @@
 git submodule update --init --recursive
 
 cd ..
+# find . -type l -maxdepth 1 -ls
+find . -type l -maxdepth 1 |xargs rm
+
 ln -s .emacs.d-vg .emacs.d
 
-for i in ~/.emacs.d/root/.*
+for i in ~/.emacs.d/root/.[0-z]* ~/.emacs.d/root/bin
 do
-	echo linking $i
-	ln -s $i .
+	echo linking $i `basename $i` 
+	ln -s $i `basename $i` 
 done
+
+ls -la
 
