@@ -11,10 +11,12 @@ die "Usage: $0 SrcName DestName * \n" if $nbArgs < 3;
 # print Dumper \@ARGV;
 
 my $SrcName = shift;
+$SrcName = ucfirst($SrcName);
 my $srcName = lcfirst($SrcName);
 my $SRCNAME = uc($SrcName);
 
 my $DstName = shift;
+$DstName = ucfirst($DstName);
 my $dstName = lcfirst($DstName);
 my $DSTNAME = uc($DstName);
 
