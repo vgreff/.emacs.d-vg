@@ -24,8 +24,8 @@ my $DSTNAME = uc($DstName);
 # printf("src=$srcName $SrcName $SRCNAME\n");
 # printf("src=$dstName $DstName $DSTNAME\n");
 
-printf("@ARGV\n");
-print Dumper \@ARGV;
+# printf("@ARGV\n");
+# print Dumper \@ARGV;
 
 my $cmd;
 
@@ -46,5 +46,15 @@ foreach my $f (@ARGV)
 $cmd = sprintf("rename 's/$SrcName/$DstName/g' @ARGV");
 printf("$cmd\n");
 `$cmd`;
-`ls -l`;
+
+my $output;
+
+$output = `ls -l`;
+printf("\n$output\n");
+
+$output = `pwd`;
+printf("\ncd $output\n");
+
+$output = `cat README.md`;
+printf("\n$output\n");
 
