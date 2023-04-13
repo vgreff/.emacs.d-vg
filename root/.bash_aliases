@@ -77,8 +77,8 @@ fi
 export LC_ALL=C
 
 #PS1='[$? \u@\h:\w]\$'
-PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
-
+#PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
+PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! :\[\033[00m\] '
 #***********************************************************************
 # git aliases
 #***********************************************************************
@@ -90,7 +90,7 @@ export VGROOT=$VGHOME/root
 export VGCONF=$VGHOME/config
 
 
-export PATH=.:$PATH:$VGROOT/bin/:~/bin/:/home/vgreff/.local/bin:
+export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
 
 
 #unset MANPATH
