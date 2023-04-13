@@ -62,6 +62,6 @@
 [rerere]
 	enabled = true
 [pull]
-	rebase = true
+	#rebase = true
 [branch "master"]
 	mergeoptions = --squash
