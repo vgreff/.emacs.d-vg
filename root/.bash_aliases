@@ -91,6 +91,7 @@ export VGCONF=$VGHOME/config
 
 
 export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
+PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
 
 
 #unset MANPATH
