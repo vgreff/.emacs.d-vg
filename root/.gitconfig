@@ -65,4 +65,7 @@
 #	ff=true
 	#rebase = true
 [branch "master"]
-	mergeoptions = --squash
+#	mergeoptions = --squash
+[credential]
+	helper = store
+	
