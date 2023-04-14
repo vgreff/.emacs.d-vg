@@ -62,10 +62,10 @@
 [rerere]
 	enabled = true
 [pull]
-#	ff=true
-	#rebase = true
+#	ff = true
+	rebase = true
 [branch "master"]
 #	mergeoptions = --squash
 [credential]
 	helper = store
-	
+
