@@ -21,6 +21,12 @@ setenv EDITOR emacs
 #*********** aliases  *****************************************************
 
 alias gitc='git clone ' 
+alias gb='git branch ' 
+alias gba='git branch -a' 
+alias gw='git worktree ' 
+alias gwl='git worktree list' 
+alias gwa='git worktree add' 
+alias gr='git remote -v ' 
 
 alias bl="/bin/ls"
 alias l="ls -o"
@@ -91,11 +97,13 @@ export VGCONF=$VGHOME/config
 
 
 export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
-PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
 
+if [ -e /etc/redhat-release ]; then
+	PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
+	MANPATH=:$MANPATH
+fi
 
 #unset MANPATH
-MANPATH=:$MANPATH
 
 alias dh='cd --'
 shopt -s autocd    
@@ -103,4 +111,10 @@ shopt -s cdspell
 shopt -s globstar
 
 alias ff='which '
+
+
+# Source extra setting
+if [ -f .bash_aliases-extra ]; then
+        . .bash_aliases-extra
+fi
 

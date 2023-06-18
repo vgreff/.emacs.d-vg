@@ -9,47 +9,56 @@
 	interactive = auto
 
 [core]
-        whitespace = trailing-space,space-before-tab
+	whitespace = trailing-space,space-before-tab
 	editor = code --wait
 
 [diff]
-        renames = copies
+	renames = copies
 
 [merge]
-        stat = true
+	stat = true
 
 [alias]
-        br = branch
-        ci = commit
-        last = log -1 HEAD
+	br = branch
+
+	c = commit
+	cm = commit -m
+	cma = commit -a -m
+	ca = commit --amend
+	caa = commit -a --amend -C HEAD
+	amend = "commit --ammend"
+	
+	w = worktree
+	wl = worktree list
+	wa = worktree add
+
 	st = status
 	co = checkout
+
 	staged = "diff --cached"
 	unstaged = diff
 	both = "diff HEAD"
+
+	last = log -1 HEAD
 	oneline = "log --pretty=oneline"
-        lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit --date=relative"
-        lg2 = "log --oneline --date-order --graph --all --decorate"
-        lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
-        lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph --stat"
+	lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit --date=relative"
+	lg2 = "log --oneline --date-order --graph --all --decorate"
+	lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
+	lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph --stat"
+
 	F = pull
 	P = push
-        aa = "add -A"
-        ai = add --interactive
 
-        cm = commit -m
-        cma = commit -a -m
-        ca = commit --amend
-        caa = commit -a --amend -C HEAD
-	amend = "commit --ammend"
-	plus = "commit --ammend"
+	aa = "add -A"
+	ai = add --interactive
 
-        r = reset
-        r1 = reset HEAD^
-        r2 = reset HEAD^^
-        rh = reset --hard
-        rh1 = reset HEAD^ --hard
-        rh2 = reset HEAD^^ --hard
+	r = reset
+	rh = reset --hard
+	r1 = reset HEAD^
+	r2 = reset HEAD^^
+	rh1 = reset HEAD^ --hard
+	rh2 = reset HEAD^^ --hard
+
 	meld = !~/bin/git-meld.pl
 	cat = cat-file
 [giggle]
