@@ -114,7 +114,7 @@ alias ff='which '
 
 
 # Source extra setting
-if [ -f .bash_aliases-extra ]; then
-        . .bash_aliases-extra
+if [ -f .bash_aliases-p72 ]; then
+        . .bash_aliases-p72
 fi
 
