@@ -101,6 +101,7 @@ export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
 if [ -e /etc/redhat-release ]; then
 	PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
 	MANPATH=:$MANPATH
+
 fi
 
 #unset MANPATH
@@ -116,5 +117,9 @@ alias ff='which '
 # Source extra setting
 if [ -f ~/.bash_aliases-p72 ]; then
         . ~/.bash_aliases-p72
+else
+	if [ -e /etc/redhat-release ]; then
+		source scl_source enable gcc-toolset-12
+	fi
 fi
 
