@@ -119,7 +119,9 @@ if [ -f ~/.bash_aliases-p72 ]; then
         . ~/.bash_aliases-p72
 else
 	if [ -e /etc/redhat-release ]; then
-		source scl_source enable gcc-toolset-12
+		source scl_source enable gcc-toolset-13
+		export VCPKG_ROOT="/home/vgreff/gh/oss/vcpkg"
+		export PATH=$VCPKG_ROOT:$PATH
 	fi
 fi
 
