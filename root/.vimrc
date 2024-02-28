@@ -11,7 +11,8 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 " commenet line
 
 " set number
-set nu rnu
+set nu
+" set nu rnu
 " set rnu! to turn off
 
 syntax on
@@ -20,8 +21,8 @@ set autoindent
 set expandtab
 set softtabstop=4
 
-:augroup numbertoggle
-:  autocmd!
-:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-:augroup END
+" :augroup numbertoggle
+" :  autocmd!
+" :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+" :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+" :augroup END
