@@ -113,6 +113,11 @@ shopt -s globstar
 
 alias ff='which '
 
+# allow coredumps
+ulimit -c unlimited
+
+# emacs keybinding for the shell
+set -o emacs
 
 # Source extra setting
 if [ -f ~/.bash_aliases-p72 ]; then
