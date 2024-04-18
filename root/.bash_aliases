@@ -29,11 +29,12 @@ alias gwa='git worktree add'
 alias gr='git remote -v ' 
 
 alias bl="/bin/ls"
-alias l="ls -o"
-alias lg="ls -l"
+# alias l="ls -o"
+alias l="ls -l"
+alias lh="ls -lh"
 alias la="ls -la"
 alias ll="ls -Lo"
-alias lr="ls -og"
+alias lr="ls -lrt"
 #alias ls="ls -F"
 alias bc="bc -l"
 alias u="cd .."
@@ -99,7 +100,7 @@ export VGCONF=$VGHOME/config
 export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
 
 if [ -e /etc/redhat-release ]; then
-	PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
+	PATH=$PATH:/opt/rh/gcc-toolset-13/root/usr/bin/:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
 	MANPATH=:$MANPATH
 
 fi
@@ -112,6 +113,8 @@ shopt -s cdspell
 shopt -s globstar
 
 alias ff='which '
+alias trp="tr '\1\2\3' '|' "
+alias vgc="g++ --version"
 
 # allow coredumps
 ulimit -c unlimited
