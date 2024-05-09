@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 MV="mv -f"
+RM="rm -rf"
 
 if test $# = "0"
 then
@@ -12,19 +13,24 @@ for i in "$@"
 do
    # Make old and older flavors of a file
    
+   if test -e $i.oldest
+   then
+      ${RM} $i.oldest
+   fi
+
    if test -e $i.older
    then
-	${MV} $i.older $i.oldest
+      ${MV} $i.older $i.oldest
    fi
 
    if test -e $i.old
    then
-	${MV} $i.old $i.older
+      ${MV} $i.old $i.older
    fi
    
    if test -e $i
    then
-	${MV} $i $i.old
+      ${MV} $i $i.old
    else
         print -u2 "warning: $i - no such file or directory"
    fi

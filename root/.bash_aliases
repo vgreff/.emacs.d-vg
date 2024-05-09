@@ -20,6 +20,10 @@ setenv EDITOR emacs
 
 #*********** aliases  *****************************************************
 
+alias gitr='git reset --hard ' 
+alias gitcl='git clean -f ' 
+alias gits='git status ' 
+alias gitrc='gitr; gitcl; gits ' 
 alias gitc='git clone ' 
 alias gb='git branch ' 
 alias gba='git branch -a' 
