@@ -7,10 +7,6 @@ fi
 
 
 
-#if [ -f ~/.bash_jvtenv ]; then
-#    . ~/.bash_jvtenv
-#fi
-
 function setenv
 {
     eval "$1='$2' export $1"
@@ -18,7 +14,9 @@ function setenv
 
 # setenv EDITOR emacs
 
-#*********** aliases  *****************************************************
+#***********************************************************************
+# git aliases
+#***********************************************************************
 
 alias gitr='git reset --hard ' 
 alias gitcl='git clean -f ' 
@@ -32,6 +30,7 @@ alias gwl='git worktree list'
 alias gwa='git worktree add' 
 alias gr='git remote -v ' 
 
+#*********** aliases  *****************************************************
 alias bl="/bin/ls"
 # alias l="ls -o"
 alias l="ls -l"
@@ -50,7 +49,13 @@ alias pej='env|sort| egrep "^J|^PATH|^LD_|^REPLAY"'
 alias pep='env|sort| egrep "^PATH|^LD_"'
 alias ssh='ssh -X '
 alias now="date +%Y%m%d-%H%M%S"
+alias today="date +%Y%m%d"
 alias del=" /bin/rm -f  *~  .*~ *.bak .*.bak *.BAK ;find -L . -name \"*~\" -delete ; find -L . -name \"core\" -delete ;find -L . -name \".#*\" -delete ;"
+
+alias ff='which '
+alias trp="tr '\1\2\3' '|' "
+alias vgc="g++ --version"
+
 
 #*********** emacs  *****************************************************
 
@@ -73,18 +78,11 @@ function sm
 
 #***********************************************************************
 
-
-
-
 export LC_ALL=C
 
 #PS1='[$? \u@\h:\w]\$'
 #PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
 PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! :\[\033[00m\] '
-#***********************************************************************
-# git aliases
-#***********************************************************************
-
 
 #***********************************************************************
 export VGHOME=~/.emacs.d/
@@ -102,9 +100,7 @@ shopt -s autocd
 shopt -s cdspell
 shopt -s globstar
 
-alias ff='which '
-alias trp="tr '\1\2\3' '|' "
-alias vgc="g++ --version"
+#***********************************************************************
 
 # allow coredumps
 ulimit -c unlimited
