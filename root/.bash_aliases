@@ -16,7 +16,7 @@ function setenv
     eval "$1='$2' export $1"
 }
 
-setenv EDITOR emacs
+# setenv EDITOR emacs
 
 #*********** aliases  *****************************************************
 
