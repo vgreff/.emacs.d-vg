@@ -74,15 +74,6 @@ function sm
 #***********************************************************************
 
 
-#if [ "$USER" = jvtapp ]; then
-#   . ~/DEPLOY/PROD/envrun.sh
-#else
-#   . $JVTROOT/package/envdev.sh
-#fi
-
-if [ -f ~/.bash_user ]; then
-    . ~/.bash_user
-fi
 
 
 export LC_ALL=C
@@ -103,11 +94,6 @@ export VGCONF=$VGHOME/config
 
 export PATH=.:$PATH:$VGROOT/bin/:~/bin/:~/.local/bin:
 
-if [ -e /etc/redhat-release ]; then
-	PATH=$PATH:/opt/rh/gcc-toolset-13/root/usr/bin/:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
-	MANPATH=:$MANPATH
-
-fi
 
 #unset MANPATH
 
@@ -126,11 +112,20 @@ ulimit -c unlimited
 # emacs keybinding for the shell
 set -o emacs
 
+if [ -f ~/.bash_user ]; then
+    . ~/.bash_user
+		if [ -e /etc/redhat-release ]; then
+			PATH=$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
+			MANPATH=:$MANPATH
+
+		fi
 # Source extra setting
-if [ -f ~/.bash_aliases-p72 ]; then
+elif [ -f ~/.bash_aliases-p72 ]; then
         . ~/.bash_aliases-p72
 else
 	if [ -e /etc/redhat-release ]; then
+		PATH=$PATH:/opt/rh/gcc-toolset-13/root/usr/bin/:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
+		MANPATH=:$MANPATH
 		source scl_source enable gcc-toolset-13
 		export VCPKG_ROOT="/home/vgreff/gh/oss/vcpkg"
 		export PATH=$VCPKG_ROOT:$PATH
