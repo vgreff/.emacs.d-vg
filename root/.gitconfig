@@ -33,7 +33,9 @@
 	wa = worktree add
 
 	st = status
-	co = checkout
+	co = "checkout -t "
+
+	cl = "clean -f "
 
 	staged = "diff --cached"
 	unstaged = diff
@@ -41,10 +43,11 @@
 
 	last = log -1 HEAD
 	oneline = "log --pretty=oneline"
-	lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit --date=relative"
-	lg2 = "log --oneline --date-order --graph --all --decorate"
-	lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
-	lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph --stat"
+	lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit  --date=format-local:'%Y-%m-%d %H:%M:%S'"
+	lg2 = "log --oneline --date-order --graph --all --decorate  --date=format-local:'%Y-%m-%d %H:%M:%S'"
+	lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph"
+	lg3r = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
+	lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph --stat"
 
 	F = pull
 	P = push
@@ -76,5 +79,5 @@
 [branch "master"]
 #	mergeoptions = --squash
 [credential]
-	helper = store
+#	helper = store
 
