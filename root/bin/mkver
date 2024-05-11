@@ -13,8 +13,7 @@ do
    # keep 999 versions of pervious files
    
 
-   if test -e $i
-   then
+   if [ -f $i -o -d $i  -o -h $i  ];   then
        LAST=`ls -C1 -d ${i}.* |& fgrep -v "cannot access"|tail -1`
        LASTLEN=`echo $LAST |wc -m`
        LASTST=`expr  $LASTLEN - 3`
@@ -29,7 +28,7 @@ do
        #echo $i ${i}.$NEXTNB
        ${MV} $i ${i}.$NEXTNB
    else
-        printf  "warning: $i - no such file or directory\n"
+        echo  "warning: $i - no such file or directory"
    fi
 
 done
