@@ -114,7 +114,7 @@ if [ -e ~/.bash_user ]; then
 elif [ -e ~/.bash_aliases-p72 ]; then
         . ~/.bash_aliases-p72
 else
-	if [ -e /etc/redhat-release ]; then
+	if [ -e /etc/redhat-release -a -e /usr/bin/scl_source ]; then
 		PATH=$PATH:/opt/rh/gcc-toolset-13/root/usr/bin/:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
 		MANPATH=:$MANPATH
 		source scl_source enable gcc-toolset-13
