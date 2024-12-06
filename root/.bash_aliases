@@ -19,12 +19,14 @@ function setenv
 #***********************************************************************
 
 alias gitr='git reset --hard ' 
-alias gitcl='git clean -f ' 
+alias gitcl='git clean -fdx ' 
 alias gits='git status ' 
 alias gitrc='gitr; gitcl; gits ' 
 alias gitc='git clone ' 
 alias gb='git branch ' 
 alias gba='git branch -a' 
+alias gcl='git clone ' 
+alias gco='git checkout ' 
 alias gw='git worktree ' 
 alias gwl='git worktree list' 
 alias gwa='git worktree add' 
