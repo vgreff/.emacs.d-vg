@@ -30,6 +30,8 @@ alias gw='git worktree '
 alias gwl='git worktree list' 
 alias gwa='git worktree add' 
 alias gr='git remote -v ' 
+alias gtc='git describe --tags '
+alias gte='git describe --tags --exact-match '
 
 #*********** aliases  *****************************************************
 alias bl="/bin/ls"
