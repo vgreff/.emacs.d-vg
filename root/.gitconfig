@@ -44,10 +44,39 @@
 	last = log -1 HEAD
 	oneline = "log --pretty=oneline"
 	lg = "log --graph --all --pretty=format:'%Cred%h%Creset - %Cgreen(%cr)%Creset %s%C(yellow)%d%Creset' --abbrev-commit  --date=format-local:'%Y-%m-%d %H:%M:%S'"
-	lg2 = "log --oneline --date-order --graph --all --decorate  --date=format-local:'%Y-%m-%d %H:%M:%S'"
-	lg3 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph"
+	# deprecated start
+	lg2o = "log --oneline --date-order --graph --all --decorate  --date=format-local:'%Y-%m-%d %H:%M:%S'"
+	lg3o = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph"
 	lg3r = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=relative --topo-order --graph"
-	lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph --stat"
+	# lg4 = "log --pretty=format:'%Cred%h%Creset%x09%Cblue%ad%Creset%x09%Cgreen(%an)%Creset   %x09%s' --date=format-local:'%Y-%m-%d %H:%M:%S' --topo-order --graph --stat"
+	# deprecated end
+
+	lg1s= "log --date-order --graph --all --decorate --pretty=format:'%C(auto)%h%Creset %C(auto)%Creset %C(bold blue)%ad%Creset %C(bold green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S'"
+	lg1= "log --date-order --graph --all --decorate --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %C(bold blue)%ad%Creset %C(bold green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S'"
+
+	lg2s= "log --date-order --graph --all --decorate --pretty=format:'%Cred%h%Creset %C(auto)%Creset %C(bold blue)%ad%Creset %C(green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S'"
+	lg2= "log --date-order --graph --all --decorate --pretty=format:'%Cred%h%Creset %C(auto)%d%Creset %C(bold blue)%ad%Creset %C(green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S'"
+
+	lg3s = "log --date-order --graph --decorate --pretty=format:'%C(auto)%h%Creset %C(auto)%Creset %C(bold blue)%ad%Creset %C(bold green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S' HEAD"
+	lg3 = "log --date-order --graph --decorate --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %C(bold blue)%ad%Creset %C(bold green)%an%Creset %s' --date=format-local:'%Y-%m-%d %H:%M:%S' HEAD"
+
+# Explanation:
+# •	--date-order: Ensures commits are shown in the order they were committed.
+# •	--graph: Provides a graphical representation of the commit history.
+# •	--all: Shows all branches.
+# •	--decorate: Adds branch and tag names to the commit output.
+# •	%C(auto): Automatically applies Git's default colors for the commit hash and refs.
+# •	%Creset: Resets the color to default after each colored segment.
+# •	%C(bold blue)%ad%Creset: Colors the author date in bold blue.
+# •	%C(bold green)%an%Creset: Colors the author name in bold green.
+# •	%s: Commit subject/message, displayed in the terminal's default color.
+# Format Details:
+# •	%h: Abbreviated commit hash.
+# •	%d: Ref names (branches and tags).
+# •	%ad: Author date.
+# •	%an: Author name.
+# •	%s: Commit subject/message.
+# This command will display commits with the commit hash and refs first, followed by the date and author, and then the commit description, all while maintaining a color scheme similar to the default git log output. Adjust the colors if needed to suit your preferences.
 
 	F = pull
 	P = push
