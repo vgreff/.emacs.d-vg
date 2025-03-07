@@ -18,17 +18,22 @@ function setenv
 # git aliases
 #***********************************************************************
 
+alias gitc='git clone --recursive ' 
+alias gco='git checkout ' 
+alias gitlf='git lfs pull '
+alias gitsub='git submodule update --init --recursive  '
+
 alias gitr='git reset --hard ' 
 alias gitcl='git clean -fdx ' 
 alias gits='git status ' 
 alias gitrc='gitr; gitcl; gits ' 
-alias gitc='git clone ' 
+
 alias gb='git branch ' 
 alias gba='git branch -a' 
-alias gco='git checkout ' 
 alias gw='git worktree ' 
 alias gwl='git worktree list' 
 alias gwa='git worktree add' 
+
 alias gr='git remote -v ' 
 alias gtc='git describe --tags '
 alias gte='git describe --tags --exact-match '
