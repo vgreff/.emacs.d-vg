@@ -1,1 +1,0 @@
-find . |egrep -v "jam|.svn|codegen_ruby_docs|\.[hc]pp|\.cache|-sav|Jam|doxygen"| xargs fgrep -n hpp {} \; |egrep -v "Copyright|pantheios|boost"

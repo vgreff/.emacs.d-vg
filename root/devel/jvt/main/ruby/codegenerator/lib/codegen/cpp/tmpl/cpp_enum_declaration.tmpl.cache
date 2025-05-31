@@ -1,9 +1,0 @@
-if @me.brief 
- _buf << %Q`//! #{@me.brief}\n`
-end
- _buf << %Q`enum #{@me.name} {
-  #{@me.values.join(%Q/,#{Codegen::NL}  /)}
-};
-
-// Number of entries in #{@me.name}
-enum { #{@me.size_enum_name} = #{@me.values.length} };\n`

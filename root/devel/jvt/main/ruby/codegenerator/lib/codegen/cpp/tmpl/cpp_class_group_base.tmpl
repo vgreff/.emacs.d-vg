@@ -1,6 +1,0 @@
-<?rb @me.methods.each do |method| ?>
-
-virtual #{method[:return]}
-#{method[:name]}(#{method[:arg_typed_names].join(', ')}) = 0;
-
-<?rb end ?>

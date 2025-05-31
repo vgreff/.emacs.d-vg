@@ -1,1 +1,0 @@
-#{"extern " if !@me.inline and !@me.scope_class}#{@me.api_decl_text}#{@me.friend_text}char const* to_c_str(#{@me.name} e);

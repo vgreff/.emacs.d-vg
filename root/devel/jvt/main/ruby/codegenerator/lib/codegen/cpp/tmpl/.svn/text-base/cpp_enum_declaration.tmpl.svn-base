@@ -1,9 +1,0 @@
-<?rb if @me.brief ?> 
-//! #{@me.brief}
-<?rb end ?>
-enum #{@me.name} {
-  #{@me.values.join(%Q/,#{Codegen::NL}  /)}
-};
-
-// Number of entries in #{@me.name}
-enum { #{@me.size_enum_name} = #{@me.values.length} };

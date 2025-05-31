@@ -1,4 +1,0 @@
-You can generate docs for the code (I have commented most of it so others here can use).
-
-rdoc -a -N -d lib -o ~/tmp/etf_ruby_docs
-
