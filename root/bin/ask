@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+#
+# ask - one-shot question to Claude, answer straight to stdout.
+#
+# Three ways in:
+#
+#   1. question in args
+#        ask what is the git command to squash the last 3 commits
+#        ask 'how do I find files >100MB?'   # quote if you use ? * ! | > $ ( )
+#
+#   2. question piped in
+#        echo 'how do I rename a git branch' | ask
+#
+#   3. data piped in, question in args  (answers the question about the data)
+#        git log --oneline -20 | ask which commits touch the parser
+#        ask < notes.txt                     # same as mode 2
+#        cat mg_types.hpp | ask which enum holds the reject codes
+#
+# Answers are terse by design (a command plus one line of why). For anything
+# longer, use `claude` interactively instead.
+#
+# Installed twice, as ask and as ask (one script, one symlink) - type whichever
+# comes to mind. Despite the name, it talks to Claude, not to OpenAI.
+#
+# Options:
+#   -m, --model M    override model (default: sonnet; haiku is not faster here
+#                    and gets git/shell flags wrong, so it is not the default)
+#   -l, --long       allow a fuller answer instead of the terse default
+#   --max-stdin N    cap piped data at N bytes (default 256 KiB, env
+#                    ask_MAX_STDIN); guards against a multi-MB pipe hanging
+#   -h, --help       this text
+#
+set -uo pipefail
+
+MODEL=sonnet
+LONG=0
+MAX_STDIN=${ask_MAX_STDIN:-262144}   # 256 KiB of piped data; --max-stdin to change
+
+ME="${0##*/}"
+die() { printf '%s: %s\n' "$ME" "$1" >&2; exit 2; }
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -m|--model) [[ $# -ge 2 ]] || die "--model needs a value"; MODEL="$2"; shift 2 ;;
+        -l|--long)  LONG=1; shift ;;
+        --max-stdin)
+            [[ $# -ge 2 ]] || die "--max-stdin needs a value"
+            [[ "$2" =~ ^[0-9]+$ ]] || die "--max-stdin needs a number of bytes, got '$2'"
+            MAX_STDIN="$2"; shift 2 ;;
+        # Print the leading comment block (every '#' line after the shebang,
+        # stopping at the first non-comment line) so editing the header above
+        # cannot desync the help text.
+        # Rewrite 'ask' to whatever name was invoked so the help reads correctly
+        # through the `ask` symlink. The "Installed twice" line names both
+        # commands on purpose, so exempt it.
+        -h|--help)  tail -n +3 "$0" | sed -n '/^#/!q; s/^# \{0,1\}//p' \
+                        | sed "/^Installed twice/!s/\bask\b/$ME/g"; exit 0 ;;
+        --)         shift; break ;;
+        -*)         die "unknown option '$1' (use -- to pass it as text)" ;;
+        *)          break ;;
+    esac
+done
+
+PROMPT="$*"
+HAS_DATA=0
+
+# Three input modes:
+#   args only  -> the args are the question
+#   pipe only  -> stdin is the question
+#   both       -> args are the question, stdin is data to answer it against
+if [[ ! -t 0 ]]; then
+    STDIN="$(cat)"
+
+    # Size check FIRST. The whitespace test below is a global substring
+    # replacement, and on a multi-MB payload bash spends minutes in it - so
+    # checking size afterwards would hang before ever reporting the problem.
+    if (( ${#STDIN} > MAX_STDIN )); then
+        Q=""
+        [[ -n "$PROMPT" ]] && Q=" '$PROMPT'"
+        die "stdin is ${#STDIN} bytes (limit $MAX_STDIN); narrow it first, e.g.
+  ... | head -c $MAX_STDIN | $ME$Q
+  ... | grep <pattern> | $ME$Q
+or raise the cap with $ME --max-stdin N (or export ask_MAX_STDIN=N)"
+    fi
+
+    if [[ -z "${STDIN//[[:space:]]/}" ]]; then
+        :  # empty/whitespace-only pipe: fall through to the args-only path
+    elif [[ -z "$PROMPT" ]]; then
+        PROMPT="$STDIN"
+    else
+        HAS_DATA=1
+        PROMPT="$PROMPT"$'\n\nAnswer using the data below.\n\n<data>\n'"$STDIN"$'\n</data>'
+    fi
+fi
+
+[[ -n "${PROMPT//[[:space:]]/}" ]] || die "no prompt given (try: $ME -h)"
+
+command -v claude >/dev/null || die "'claude' not found on PATH"
+
+# A prompt starting with '-' would be parsed as a flag by claude itself, so
+# nudge it off the dash. (Reached via `ask -- -i flag in grep ...`.)
+[[ "$PROMPT" == -* ]] && PROMPT="Question: $PROMPT"
+
+# Shared across all three personas: the output lands in a terminal that does not
+# render markdown, and models drift back to it unless told this explicitly.
+PLAIN='Output is read in a terminal that does NOT render markdown. Emit plain
+text only: no **bold**, no backticks (not even around code or identifiers), no #
+headers, no *italics*, no ``` fences. For a list use a leading "- ". Put commands
+or code on their own line, indented two spaces.'
+
+if (( HAS_DATA )); then
+    # Answering about piped data, not recalling a command: the cheat-sheet
+    # persona would wrongly compress a real answer down to one line.
+    SYS='You are answering a question about the data the user piped in, shown
+between <data> tags. Answer only from that data. Quote the relevant values or
+lines rather than describing them in the abstract. If the data does not contain
+the answer, say exactly that instead of guessing or padding. Be brief - as long
+as the answer genuinely needs, and no longer. No preamble, no restating the
+question, no sign-off.
+'"$PLAIN"
+elif (( LONG )); then
+    SYS='You are a terminal assistant. Answer directly and completely, but skip
+preamble, restating the question, and closing pleasantries.
+'"$PLAIN"
+else
+    SYS='You are a terminal cheat-sheet. Answer in the fewest lines that are
+genuinely useful - usually the exact command on its own line, then at most one
+short line saying what it does or the flag that matters. No preamble, no
+restating the question, no sign-off. If the question is ambiguous, answer the
+most common reading rather than asking. If a command is destructive or
+irreversible, say so in three words or less. If you do not know, say so instead
+of inventing a flag.
+'"$PLAIN"
+fi
+
+# Stateless: repeated asks never pick up context from each other or from -c.
+exec claude -p "$PROMPT" \
+    --model "$MODEL" \
+    --system-prompt "$SYS" \
+    --no-session-persistence
