@@ -109,30 +109,33 @@ export LC_ALL=C
 # prompt 
 
 #PS1='[$? \u@\h:\w]\$'
-#PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
-#PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! :\[\033[00m\] '
-#PS1='$? \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
-#PS1='$? $(if [ "$?" = "0" ]; then 	echo -e "\033[0;32m✔\033[0;0m"; else 	echo -e "\033[0;31m☹\033[0;0m "; fi) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
-
-# PS1='$? $(if [ "$?" = "0" ]; then 	echo -e "${YELLOW}✔${NC}"; else 	echo -e "${RED}☹${NC} "; fi) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
-
 # PS1='$? $(if [ "$?" = "0" ]; then       echo -e "${YELLOW}✔${NC}"; else         echo -e "${RED}☹${NC} "; fi) \[\e]0;\u@\h: \w\a\]\[\e]1337;CurrentDir=${PWD}\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
+
+GREEN='\033[01;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+BLUE='\033[01;34m'
+WHITE='\033[0;37m'
+ARROW_COLOR='\033[00m' # Matches the original uncolored ➜ terminal output
+NC='\033[0m'
+
 set_my_prompt() {
     local status=$?
 
     PS1="${status} "
     if [ "$status" -eq 0 ]; then
-        PS1+='\[\033[33m\]✔\[\033[0m\]'
+        PS1+="\[${YELLOW}\]✔\[${NC}\]"
     else
-        PS1+='\[\033[31m\]☹\[\033[0m\] '
+        PS1+="\[${RED}\]☹\[${NC}\] "
     fi
 
-    PS1+=' \[\e]0;\u@\h: \w\a\]'
-    PS1+='\[\e]1337;CurrentDir=${PWD}\a\]'
+    PS1+=" \[\e]0;\u@\h: \w\a\]"
+    PS1+="\[\e]1337;CurrentDir=${PWD}\a\]"
     PS1+='${debian_chroot:+($debian_chroot)}'
-    PS1+='\[\033[01;32m\]\u@\h\[\033[00m\]:'
-    PS1+='\[\033[01;34m\]\w\[\033[00m\]'
-    PS1+=' \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
+    
+    PS1+="\[${GREEN}\]\u@\h\[${NC}\]:"
+    PS1+="\[${BLUE}\]\w\[${NC}\]"
+    PS1+="\n \[${YELLOW}\]!\! \[${ARROW_COLOR}\]➜ \[${NC}\]"
 }
 
 PROMPT_COMMAND=set_my_prompt
