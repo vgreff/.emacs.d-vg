@@ -92,15 +92,6 @@ function sm
 # https://symbl.cc/en/collections/arrow-symbols/
 # http://panmental.de/symbols/info.htm
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-WHITE='\033[0;37m'
-NC='\033[0m' # No Color
-
-# if [ "$?" = "0" ]; then 	echo -e "${YELLOW}✔${NC}"; else 	echo -e "${RED}☹${NC} "; fi
-
 #***********************************************************************
 
 export LC_ALL=C
@@ -171,7 +162,7 @@ elif [ -e ~/.bash_aliases-p72 ]; then
         . ~/.bash_aliases-p72
 else
 	if [ -e /etc/redhat-release -a -e /usr/bin/scl_source ]; then
-		PATH=$PATH:/opt/rh/gcc-toolset-14/root/usr/bin/:/opt/rh/gcc-toolset-13/root/usr/bin/:/opt/rh/gcc-toolset-12/root/usr/bin/:/opt/rh/gcc-toolset-11/root/usr/bin/:/opt/rh/gcc-toolset-10/root/usr/bin/:/opt/rh/gcc-toolset-9/root/usr/bin/:
+		PATH=$PATH:/opt/rh/gcc-toolset-15/root/usr/bin/:/opt/rh/gcc-toolset-14/root/usr/bin/:
 		PATH=$PATH:/usr/local/texlive/2025/bin/x86_64-linux
 		MANPATH=:$MANPATH
         source scl_source enable gcc-toolset-14
