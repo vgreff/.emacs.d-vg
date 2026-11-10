@@ -115,7 +115,26 @@ export LC_ALL=C
 
 # PS1='$? $(if [ "$?" = "0" ]; then 	echo -e "${YELLOW}✔${NC}"; else 	echo -e "${RED}☹${NC} "; fi) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
 
-PS1='$? $(if [ "$?" = "0" ]; then       echo -e "${YELLOW}✔${NC}"; else         echo -e "${RED}☹${NC} "; fi) \[\e]0;\u@\h: \w\a\]\[\e]1337;CurrentDir=${PWD}\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
+# PS1='$? $(if [ "$?" = "0" ]; then       echo -e "${YELLOW}✔${NC}"; else         echo -e "${RED}☹${NC} "; fi) \[\e]0;\u@\h: \w\a\]\[\e]1337;CurrentDir=${PWD}\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
+set_my_prompt() {
+    local status=$?
+
+    PS1="${status} "
+    if [ "$status" -eq 0 ]; then
+        PS1+='\[\033[33m\]✔\[\033[0m\]'
+    else
+        PS1+='\[\033[31m\]☹\[\033[0m\] '
+    fi
+
+    PS1+=' \[\e]0;\u@\h: \w\a\]'
+    PS1+='\[\e]1337;CurrentDir=${PWD}\a\]'
+    PS1+='${debian_chroot:+($debian_chroot)}'
+    PS1+='\[\033[01;32m\]\u@\h\[\033[00m\]:'
+    PS1+='\[\033[01;34m\]\w\[\033[00m\]'
+    PS1+=' \n \[\033[1;33m\]!\! \[\033[00m\]➜ '
+}
+
+PROMPT_COMMAND=set_my_prompt
 
 #***********************************************************************
 export VGHOME=~/.emacs.d/
