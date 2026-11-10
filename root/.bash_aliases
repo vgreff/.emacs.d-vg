@@ -63,6 +63,7 @@ alias del=" /bin/rm -f  *~  .*~ *.bak .*.bak *.BAK ;find -L . -name \"*~\" -dele
 alias ff='which '
 alias trp="tr '\1\2\3' '|' "
 alias vgc="g++ --version"
+alias cl="clear"
 
 
 #*********** emacs  *****************************************************
