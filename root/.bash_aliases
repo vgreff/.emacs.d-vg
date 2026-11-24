@@ -171,3 +171,6 @@ else
 	fi
 fi
 
+if [ -e ~/.tokens/.tokens.sh ]; then
+    . ~/.tokens/.tokens.sh
+fi
